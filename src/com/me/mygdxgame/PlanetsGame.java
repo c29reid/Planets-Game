@@ -15,9 +15,11 @@ public class PlanetsGame implements ApplicationListener {
 	private SpriteBatch batch;
 	private Texture texture;
 	private Sprite sprite;
+	private Game game;
 	
 	@Override
 	public void create() {		
+		game = new Game();
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		
@@ -37,8 +39,7 @@ public class PlanetsGame implements ApplicationListener {
 
 	@Override
 	public void dispose() {
-		batch.dispose();
-		texture.dispose();
+		game.dispose();
 	}
 
 	@Override
