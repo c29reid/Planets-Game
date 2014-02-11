@@ -1,5 +1,6 @@
 package com.me.mygdxgame;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
@@ -10,13 +11,15 @@ public class Game {
 	private Array<Planet> planets = new Array<Planet>();
 	
 	private SpriteBatch batch;
-	private Texture texture;
+	private OrthographicCamera camera;
 	
 	private int width;
 	private int height;
 
-	public void Game(int width, int height){
+	public Game(int width, int height){
 		// TODO
+		camera = new OrthographicCamera(1, ((float)height)/width);
+		batch = new SpriteBatch();
 		
 		spawnPlanets(5);
 	}
@@ -51,6 +54,5 @@ public class Game {
 	public void dispose(){
 		// TODO
 		batch.dispose();
-		texture.dispose();
 	}
 }
