@@ -18,9 +18,12 @@ public class Game {
 
 	public Game(int width, int height){
 		// TODO
+		this.width = width;
+		this.height = height;
 		camera = new OrthographicCamera(1, ((float)height)/width);
 		batch = new SpriteBatch();
 		
+		bg = new Background(width, height);
 		spawnPlanets(5);
 	}
 	
