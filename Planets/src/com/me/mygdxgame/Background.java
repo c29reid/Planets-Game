@@ -1,15 +1,18 @@
 package com.me.mygdxgame;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Background {
 	private int w;
 	private int h;
 	
 	int NUM_STARS = 500;
-	private Array<Star> stars = new Array<Star>();
+	private ArrayList<Star> stars = new ArrayList<Star>();
 	
 	//private Pixmap pix;
 	private Texture tex;
@@ -29,9 +32,32 @@ public class Background {
 		spawnStars(NUM_STARS);
 	}
 	
+	public void update(){
+		Star s;
+		for (int i=0; i<stars.size(); i++){
+			s = stars.get(i);
+			s.update();
+		}
+		
+		
+	}
+	
+	public Texture getTexture(){
+		return tex;
+	}
+	
+	public void drawStars(SpriteBatch batch){
+		// Needs batch.begin() called before this is called
+		for (int i=0; i<stars.size(); i++){
+			Star s = stars.get(i);
+			batch.draw(s.getTexture(), s.x, s.y);
+		}
+	}
+	
 	private void spawnStars(int numStars){
+		Random r = new Random();
 		for (int i=0; i<numStars; i++){
-			stars.add(new Star());
+			stars.add(new Star(r.nextInt(w), r.nextInt(h)));
 		}
 	}
 	
