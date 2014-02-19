@@ -13,21 +13,27 @@ public class Star {
 	static Texture onTexture;
 	static Texture offTexture;
 	
-	public int x;
-	public int y;
+	public float x;
+	public float y;
+	public float dx;
+	public int w;
+	public int h;
 	
 	private Boolean on;
 	private int clock;
 	private int tick;
 	
-	public Star(int x, int y){
+	public Star(float x, float y, int maxX, int maxY){
 		this.x = x;
 		this.y = y;
+		w = maxX;
+		h = maxY;
 		on = true;
 		tick = 0;
 		
 		Random r = new Random();
-		clock = r.nextInt(180)+30;
+		clock = r.nextInt(9360)+120;
+		dx = r.nextInt(5)/100f;
 		
 		createTex();
 	}
@@ -41,6 +47,8 @@ public class Star {
 			on = true;
 		}
 		tick = (tick+1)%clock;
+		x += dx;
+		x = x % w;
 	}
 	
 	public Texture getTexture(){

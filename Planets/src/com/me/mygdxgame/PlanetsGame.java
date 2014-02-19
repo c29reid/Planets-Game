@@ -24,7 +24,7 @@ public class PlanetsGame implements ApplicationListener {
 	}
 
 	@Override
-	public void dispose() {
+	public void dispose() {	
 		game.dispose();
 	}
 

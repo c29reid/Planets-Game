@@ -57,7 +57,7 @@ public class Background {
 	private void spawnStars(int numStars){
 		Random r = new Random();
 		for (int i=0; i<numStars; i++){
-			stars.add(new Star(r.nextInt(w), r.nextInt(h)));
+			stars.add(new Star(r.nextInt(w), r.nextInt(h), w, h));
 		}
 	}
 	
