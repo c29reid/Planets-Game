@@ -48,6 +48,7 @@ public class Background {
 	
 	public void drawStars(SpriteBatch batch){
 		// Needs batch.begin() called before this is called
+		// TODO: Find a better way to draw without copying batch each time this is called
 		for (int i=0; i<stars.size(); i++){
 			Star s = stars.get(i);
 			batch.draw(s.getTexture(), s.x, s.y);
