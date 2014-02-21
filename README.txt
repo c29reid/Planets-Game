@@ -8,6 +8,7 @@ Features implemented so far:
 - Stars + animations
 
 Next steps:
+- Include eclipse .project and etc so that this can be opened in eclipse
 - Add planets and planet generating
 - Add rockets with collision
 - Add weapons
