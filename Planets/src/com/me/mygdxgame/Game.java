@@ -1,5 +1,8 @@
 package com.me.mygdxgame;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -11,7 +14,7 @@ import com.badlogic.gdx.utils.Array;
 public class Game {
 	
 	private Background bg;
-	private Array<Planet> planets = new Array<Planet>();
+	private ArrayList<Planet> planets = new ArrayList<Planet>();
 	
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
@@ -30,7 +33,7 @@ public class Game {
 		batch = new SpriteBatch();
 		
 		bg = new Background(width, height);
-		spawnPlanets(5);
+		createPlanets(5);
 		
 		startGame();
 	}
@@ -39,8 +42,15 @@ public class Game {
 	 * Spawns 
 	 * @param num Number of planets to spawn on screen
 	 */
-	public void spawnPlanets(int num){
-		// TODO
+
+	public void createPlanets(int num){
+		Random r = new Random();
+		int tempx;
+		int tempY;
+		for (int i=0; i< num; i++){
+			planets.add(new Planet(r.nextInt(width), r.nextInt(height)));
+			// TODO: Check for collision on planet spawning
+		}
 	}
 	
 	public void startGame(){
@@ -64,10 +74,16 @@ public class Game {
 		// ------ Background ------
 		batch.draw(bg.getTexture(), 0, 0);
 		bg.drawStars(batch);
+		// ------ Planets ------
+		for (int i=0; i<planets.size(); i++){
+			Planet p = planets.get(i);
+			batch.draw(p.getTexture(), p.x, p.y);
+		}
 		batch.end();
 		
-		
 	}
+	
+
 	
 	public void spawnRocket(){
 		// TODO
