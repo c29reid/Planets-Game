@@ -1,5 +1,7 @@
 package com.me.mygdxgame;
 
+import java.util.Vector;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
@@ -48,4 +50,5 @@ public class PlanetsGame implements ApplicationListener {
 	@Override
 	public void resume() {
 	}
+	
 }

@@ -1,7 +1,9 @@
 package com.me.mygdxgame;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
+import java.util.Vector;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
@@ -15,25 +17,32 @@ public class Game {
 	
 	private Background bg;
 	private ArrayList<Planet> planets = new ArrayList<Planet>();
-	
+	private ArrayList<Rocket> rockets = new ArrayList<Rocket>();
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 	
 	private int width;
 	private int height;
-
+	
+	private Boolean checkPressed = true;
+	private InputHandle inputHandler;
+	
+	
 	public Game(int width, int height){
-		// TODO
 		this.width = width;
 		this.height = height;
-		// I'm overriding the height and width because textures need to be powers of two until i find a better solution
-		width = 512; 
-		height = 512;
-		camera = new OrthographicCamera(1, ((float)height)/width);
+		// Creating the camera
+		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		// Hack to make the camera co-ordinate system consistent with the input co-ords
+		camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera.update();
+		
 		batch = new SpriteBatch();
 		
 		bg = new Background(width, height);
-		createPlanets(5);
+		createPlanets(1);
+		
+		inputHandler = new InputHandle(this);
 		
 		startGame();
 	}
@@ -64,8 +73,20 @@ public class Game {
 	}
 	
 	public void update(){
-		bg.update();		
+		bg.update();	
+		updateRockets();
+	}
+	
+	public void updateRockets(){
+		Iterator<Rocket> rocketIter = rockets.iterator();
 		
+		while (rocketIter.hasNext()){
+			Rocket r = rocketIter.next();
+			r.update();
+			if (r.isDead()){
+				rockets.remove(r);
+			}
+		}
 	}
 	
 	public void render(){
@@ -79,17 +100,31 @@ public class Game {
 			Planet p = planets.get(i);
 			batch.draw(p.getTexture(), p.x, p.y);
 		}
+		for (int i=0; i<rockets.size(); i++){
+			Rocket r = rockets.get(i);
+			batch.draw(r.getTexture(), r.getX(), r.getY());
+		}
 		batch.end();
 		
 	}
 	
 
 	
-	public void spawnRocket(){
-		// TODO
+	public void spawnRocket(int x, int y, int x2, int y2){
+		// Thrust will be a vector with a dx and dy
+		Vector<Double> thrust = new Vector<Double>();
+		int factor = 60;
+		double dx = (x2-x)/factor;
+		
+		double dy = (y2-y)/factor;
+		thrust.add(0, dx);
+		thrust.add(1, dy);
+		rockets.add(new Rocket(x, height-y, thrust, planets));
+		Gdx.app.log("INFO", "spawned Rocket");
 	}
+	
 	public void dispose(){
-		// TODO
 		batch.dispose();
 	}
+	
 }
