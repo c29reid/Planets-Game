@@ -49,6 +49,8 @@ public class PlanetsGame implements ApplicationListener {
 
 	@Override
 	public void resume() {
+		dispose(); 
+		create();
 	}
 	
 }

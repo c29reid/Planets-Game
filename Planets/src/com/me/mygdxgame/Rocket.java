@@ -6,12 +6,15 @@ import java.util.Vector;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 
 public class Rocket {
 	private int LIFE = 1024;
 	
 	private double x;
 	private double y;
+	private double oldx;
+	private double oldy;
 	private int w;
 	private int h;
 	private int timeAlive; 
@@ -21,6 +24,8 @@ public class Rocket {
 	public Vector<Double> thrustPixelsPerTick;
 	
 	private Texture texture;
+
+	public int rad;
 	static Pixmap pix;
 	static ArrayList<Planet> planets;
 	
@@ -35,6 +40,8 @@ public class Rocket {
 		thrustPixelsPerTick = initThrust;
 		this.x = x;
 		this.y = y;
+		oldx = x;
+		oldy = y;
 		w = 8;
 		h = 8;
 		massKg = 1000; // kg
@@ -55,6 +62,9 @@ public class Rocket {
 		
 		calcNewThrust();
 		thrustMove();
+		checkTooOld();
+		explodeIfCollided();
+		
 		timeAlive++;
 	}
 	
@@ -79,6 +89,8 @@ public class Rocket {
 	
 	private void thrustMove(){
 		//Gdx.app.log("INFO - Start", Double.toString(x) + " " + Double.toString(y));
+		oldx = x;
+		oldy = y;
 		x += thrustPixelsPerTick.get(0);
 		y += thrustPixelsPerTick.get(1);
 		//Gdx.app.log("INFO - End", Double.toString(x) + " " + Double.toString(y));
@@ -94,8 +106,36 @@ public class Rocket {
 		return texture;
 	}
 	
-	public void explode(){
+	/**
+	 * hasCollided - Check to see if a rocket has collided with a planet 
+	 * @param p - Planet to check collision
+	 * @return true if collided false otherwise
+	 */
+	private boolean hasCollided(Planet p){
+		// First if the traveled vector line has collided O(1)
+		// Then use pixel-collision detection
+		boolean collided = false;
+		// Use vector projection to calculate distance from line to circle
+		float dx = (float)(x - oldx);
+		float dy = (float)(y - oldy);
+		
+		Vector2 startV = new Vector2( (float) oldx, (float)oldy );
+		
+		
+		
+		alive = !collided;
+		return collided;
+		
+	}
+	public void explodeIfCollided(){
 		// Check for all planets collided with
+		for (int i=0; i<planets.size(); i++){
+			Planet p = planets.get(i);
+			
+			if (hasCollided(p)){
+				p.explode(x, y, 10);
+			}
+		}
 	}
 	
 	public void checkTooOld(){
@@ -103,6 +143,9 @@ public class Rocket {
 			alive = false;
 		}
 	}
+	
+	
+	// --- Accessors and Modifiers ---
 	
 	public int getX(){
 		return (int) this.x;
@@ -112,7 +155,19 @@ public class Rocket {
 		return (int) this.y;
 	}
 	
+	public int getMassKg() {
+		return massKg;
+	}
+
+	public void setMassKg(int massKg) {
+		this.massKg = massKg;
+	}
+
 	public boolean isDead(){
 		return alive==false;
+	}
+	
+	public void setThrust(Vector<Double> initThrust){
+		thrustPixelsPerTick = initThrust;
 	}
 }
